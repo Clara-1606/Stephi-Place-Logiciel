@@ -1,23 +1,11 @@
 import mysql.connector #Pour avoir la base de données
 from tkinter import * #Pour l'interface graphique
+import tkinter as tk
+from tkinter import ttk
 
 
 
 if __name__=="__main__":
-
-#FENETRE
-    fenetre = Tk()  # Créer une fenêtre
-    fenetre.configure(background="#000000") #Mettre une couleur de fond
-    fenetre.title("StephiPlace") #Titre
-    fenetre.geometry("700x700") #Taille (en pixel)
-    var_texte = StringVar()
-    mail = Entry(fenetre, textvariable=var_texte, width=30)
-    mail.pack()
-    mail = Entry(fenetre, textvariable=var_texte, width=30)
-    mail.pack()
-
-    #DEMARRER
-    fenetre.mainloop()
 
     
     mydb = mysql.connector.connect(
@@ -29,10 +17,52 @@ if __name__=="__main__":
 
     mycursor = mydb.cursor()
 
-    mycursor.execute("SELECT * FROM membre")
+    mycursor.execute("SELECT * FROM type_membre")
 
     myresult = mycursor.fetchall()
+    print(myresult)
 
+
+
+ 
+
+    root = tk.Tk() 
+    root.geometry('300x200')
+
+     
+
+    def action(event):
+        
+        # Obtenir l'élément sélectionné
+        select = listeCombo.get()
+        print("Vous avez sélectionné : '", select,"'")
+
+     
+
+    labelChoix = tk.Label(root, text = "Veuillez faire un choix !")
+    labelChoix.pack()
+
+     
+
+    # 2) - créer la liste Python contenant les éléments de la liste Combobox
+    listeProduits=["Laptop", "Imprimante","Tablette","SmartPhone"]
+
+     
+
+    # 3) - Création de la Combobox via la méthode ttk.Combobox()
+    listeCombo = ttk.Combobox(root, values=listeProduits)
+     
+    # 4) - Choisir l'élément qui s'affiche par défaut
+    listeCombo.current(0)
+
+     
+
+    listeCombo.pack()
+    listeCombo.bind("<<ComboboxSelected>>", action)
+
+     
+
+    root.mainloop()
 
   
         
