@@ -11,14 +11,14 @@ class Annonce:
     def __init__(self):
         self.fenetre = Tk()
         #Reinilisaliser la fenetre et le fond d'ecran
-        self.canvas = Canvas(self.fenetre, width=600, height=500, bg='white')
+        self.canvas = Canvas(self.fenetre, width=600, height=700, bg='white')
         self.canvas.pack(expand=YES, fill=BOTH)
 
         #Désactiver le changement de taille de la fenetre
         self.fenetre.resizable(width=False, height=False)
 
         ##changer le titre de la fenetre
-        self.fenetre.title("Gestion des annonces")
+        self.fenetre.title("GESTION DES ANNONCES | STEPHI PLACE")
 
         
         #Connexion à la base
@@ -32,7 +32,7 @@ class Annonce:
         curseur = connexionBdd.cursor()
 
 
-        sql="SELECT biens.id_bien, type_bien.libelle, superficie FROM `agent_immobilier` inner join agence on agent_immobilier.id_agence=agence.id_agence Inner join biens on biens.id_agence=agence.id_agence inner join type_bien on type_bien.id_type_bien = biens.id_type_bien Where mail=%s"
+        sql="SELECT biens.id_bien, type_bien.libelle, nb_piece, superficie, descriptif, adresse, complement_adresse, ville, code_postal FROM `agent_immobilier` inner join agence on agent_immobilier.id_agence=agence.id_agence Inner join biens on biens.id_agence=agence.id_agence inner join type_bien on type_bien.id_type_bien = biens.id_type_bien INNER JOIN adresse ON adresse.id_adresse=biens.id_adresse Where mail=%s"
         mail=(connexion.Connexion.staticmail,)
         curseur.execute(sql, mail)
 
@@ -44,37 +44,69 @@ class Annonce:
         z=0
         x = 0
 
+        self.frame = Frame(self.fenetre, height=660, width=560)
+        self.frame.place(x=20, y=20)
+
+        self.titre = Label(self.frame, text="Vos annonces", font=('helvetica', 20, 'underline bold'), fg="#CA1809" )
+        self.titre.place(x=180, y = 20)
+
 
         #On fait une boucle pour afficher les biens de l'agent
         for nom in biens:
-            self.idBien = Label(self.fenetre, text="Id bien : ")
-            self.idBien.place(x=100, y=30+z, width=100, height=25)
-            self.label = Label(self.fenetre, text=biens[x][0:3])
-            self.label.place(x=180, y=30+z, width=180, height=25)
-            self.m2=Label(self.fenetre, text="m2")
-            self.m2.place(x=330, y=30+z, width=50, height=25)
+            self.idBien = Label(self.frame, text="Id bien : ", anchor="e")
+            self.idBien.place(x=80, y=100+z, height=25)
+            
+            self.label = Label(self.frame, text=biens[x][0], anchor="w")
+            self.label.place(x=140, y=100+z,  height=25)
+
+            self.type = Label(self.frame, text="Type : ", anchor="e")
+            self.type.place(x=80, y=130+z,  height=25)
+
+            self.label = Label(self.frame, text=biens[x][1:3], anchor="w")
+            self.label.place(x=130, y=130+z, height=25)
+            
+            self.piece = Label(self.frame, text="Pièces")
+            self.piece.place(x= 170, y=130+z, height=25)
+
+            self.superfice = Label(self.frame, text=biens[x][3], anchor="e")
+            self.superfice.place(x=210, y=130+z, height=25)
+            
+            self.m2=Label(self.frame, text="m2")
+            self.m2.place(x=240, y=130+z, height=25)
+
+            self.descriptif = Label(self.frame, text="Description : ")
+            self.descriptif.place(x= 80, y=160+z, height=25)
+
+            self.superfice = Label(self.frame, text=biens[x][4], anchor="w")
+            self.superfice.place(x=160, y=160+z, height=25)
+
+            self.adresse = Label(self.frame, text="Adresse : ")
+            self.adresse.place(x= 80, y=190+z, height=25)
+
+            self.adresseComplete = Label(self.frame, text=biens[x][5:9], anchor="w")
+            self.adresseComplete.place(x=140, y=190+z, height=25)
 
             #Bouton pour supprimer un bien
-            self.supprime = Button(self.fenetre, text="X", font=('helvetica',12,'bold')
+            self.supprime = Button(self.frame, text="X", font=('helvetica',12,'bold')
                              , bg='#CA1809', fg='white', command=lambda x=x: self.supprimer(x))
-            self.supprime.place(x=550, y=30+z, width=25, height=25)
+            self.supprime.place(x=500, y=130+z, width=25, height=25)
 
             #Boutons pour modifier un bien
-            self.modifie = Button(self.fenetre, text="Modifier", font=('helvetica',12,'bold')
+            self.modifie = Button(self.frame, text="Modifier", font=('helvetica',12,'bold')
                              , bg='gray', fg='white', command=self.modifier)
-            self.modifie.place(x=450, y=30+z, width=70, height=25)
+            self.modifie.place(x=400, y=130+z, width=70, height=25)
             
-            z=z+50
+            z=z+150
             x=x+1
 
         #Boutons pour créer un bien et pour retourner en arrière   
-        self.cree = Button(self.fenetre, text="Créer une annonce", font=('helvetica',12,'bold')
+        self.cree = Button(self.frame, text="Créer une annonce", font=('helvetica',12,'bold')
                              , bg='green', fg='white', command=self.creer)
-        self.cree.place(x=100, y=30+z, width=150, height=25)
+        self.cree.place(x=80, y=100+z, width=150, height=25)
 
         self.boutonRetour=Button(self.fenetre, text="Retour à l'accueil", font=('helvetica',12,'bold')
                              , bg='#CA1809', fg='white', command=self.retour)
-        self.boutonRetour.place(x=220, y=400, width=150, height=25)
+        self.boutonRetour.place(x=220, y=650, width=150, height=25)
 
 
 #Fonction pour retourner à la page précédente

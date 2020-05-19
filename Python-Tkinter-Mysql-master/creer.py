@@ -5,6 +5,7 @@ import mysql.connector #Importe MySQL pour la base de données
 import annonce #Importe le fichier annonce.py
 import modifier #Importe le fichier modifier.py
 import datetime #Pour avoir la date du jour
+import connexion #Importe le fichier connexion.py
 
 
 
@@ -47,6 +48,17 @@ class Creer:
         curseur.execute("SELECT DISTINCT nom_dependance FROM dependance")
 
         dependance = curseur.fetchall()
+
+
+        #Avoir le numéro de l'agence
+        sql="SELECT id_agence FROM agent_immobilier WHERE mail=%s"
+        mail=(connexion.Connexion.staticmail,)
+        curseur.execute(sql,mail)
+        global idAgence
+        idAgence = curseur.fetchall()
+        idAgence= idAgence[0][0]
+        global agenceActuelle
+        agenceActuelle=idAgence - 1
 
         
         #Début du formulaire
@@ -137,9 +149,10 @@ class Creer:
         self.labAgence.place(x=20, y = 340)
         
 
-        self.listeAgence = ttk.Combobox(self.fenetre, values=agences)
-        self.listeAgence.current(0)
+        self.listeAgence = ttk.Combobox(self.fenetre, values=agences, state="disabled")
+        self.listeAgence.current(agenceActuelle)
         self.listeAgence.place(x=120, y = 340)
+        self.attention = Label(self.fenetre, text="Attention pour modifer l'agence il faut la modifer dans votre espace")
 
 
 
@@ -227,9 +240,6 @@ class Creer:
         
 #Fonction pour valider le bien
     def valider(self):
-
-        print(self.listeAgence.get())
-        print(var.get())
         
         #Connexion à la base
         connexionBdd = mysql.connector.connect(
@@ -243,11 +253,11 @@ class Creer:
 
 
         #Trouver l'id de l'agence choisis
-        sql="SELECT id_agence FROM agence WHERE nom_agence=%s"
-        nomAgence=(self.listeAgence.get(), )
-        curseur.execute(sql,nomAgence)
-        idAgence=curseur.fetchone()
-        idAgence=idAgence[0]
+        #sql="SELECT id_agence FROM agence WHERE nom_agence=%s"
+        #nomAgence=(self.listeAgence.get(), )
+        #curseur.execute(sql,nomAgence)
+        #idAgence=curseur.fetchone()
+        #idAgence=idAgence[0]
 
         #Avoir la date du jour
         self.date = datetime.datetime.today().strftime('%Y-%m-%d')
@@ -256,7 +266,28 @@ class Creer:
         self.status=1
 
         #Mettre les donnees dans un tuple (données)
-        donneeBien = (
+
+        donneeAdresse =(
+            self.adresse.get(),
+            self.complementAdresse.get(),
+            self.ville.get(),
+            self.codePostal.get()
+        )
+
+        if var.get()==0 or self.nbPiece.get()=="" or self.nbChambre.get()=="" or self.superficie.get()=="" or self.adresse.get()=="" or self.ville.get()=="" or self.codePostal.get()=="" or self.superficieDep.get()=="" or self.description.get()=="" or self.prixMin.get()=="" or self.prixMax.get()=="" or self.prixVente.get()=="" :
+             messagebox.showinfo("Attention!","Veuillez renseigner tous les champs.")
+        else :
+            sql="INSERT INTO adresse (adresse, complement_adresse,code_postal,ville) VALUE (%s,%s,%s,%s)"
+            curseur.execute(sql,donneeAdresse)
+            connexionBdd.commit()
+
+            curseur.execute("SELECT id_adresse FROM adresse ORDER BY id_adresse DESC")
+            idAdresse=curseur.fetchall()
+            idAdresse=idAdresse[0][0]
+
+            self.enLigne=1
+            
+            donneeBien = (
             var.get(),
             self.etage.get(),
             self.nbPiece.get(),
@@ -268,43 +299,36 @@ class Creer:
             self.prixMax.get(),
             self.prixVente.get(),
             self.date,
-            self.status
+            self.status,
+            idAdresse,
+            self.enLigne
             )
-
-        donneeAdresse =(
-            self.adresse.get(),
-            self.complementAdresse.get(),
-            self.ville.get(),
-            self.codePostal.get()
-        )
-
-        donneeDep= (
-            self.listeDep.get(),
-            self.superficieDep.get()
-            )
-
-        if var.get()==0 or self.nbPiece.get()=="" or self.nbChambre.get()=="" or self.superficie.get()=="" or self.adresse.get()=="" or self.ville.get()=="" or self.codePostal.get()=="" or self.superficieDep.get()=="" or self.description.get()=="" or self.prixMin.get()=="" or self.prixMax.get()=="" or self.prixVente.get()=="" :
-             messagebox.showinfo("Attention!","Veuillez renseigner tous les champs.")
-        else :
-            sql="INSERT INTO adresse (adresse, complement_adresse,code_postal,ville) VALUE (%s,%s,%s,%s)"
-            curseur.execute(sql,donneeAdresse)
+            curseur= connexionBdd.cursor(buffered=True)
+            sql="INSERT INTO biens (id_type_bien, etage,nb_piece, nb_chambre,superficie,id_agence, descriptif, prix_min, prix_max, prix_vente, date_ajout, id_statut, id_adresse,en_ligne) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            curseur.execute(sql,donneeBien)
             connexionBdd.commit()
 
-            curseur.execute("SELECT id_adresse FROM adresse ORDER BY id_adresse DESC")
-            idAdresse=curseur.fetchone()
-            idAdresse=idAdresse[0]
-            print(idAdresse)
-            
-            
-            #sql="INSERT INTO biens (id_type_bien, etage,nb_piece, nb_chambre,superficie,id_agence, descriptif, prix_min, prix_max, prix_vente, date_ajout, id_statut) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            #curseur.execute(sql,donneeBien)
-            #connexionBdd.commit()
 
-            print(curseur.rowcount, "was inserted.")
+            curseur.execute("SELECT id_bien FROM biens ORDER BY id_bien DESC")
+            idBien=curseur.fetchall()
+            idBien=idBien[0][0]
 
-            #self.fenetre.destroy()
+            donneeDep= (
+            self.listeDep.get(),
+            self.superficieDep.get(),
+            idBien
+            )
 
-            #log=annonce.Annonce()
+
+            sql="INSERT INTO dependance(nom_dependance,superficie,id_bien) VALUE (%s,%s,%s)"       
+            curseur.execute(sql,donneeDep)
+            connexionBdd.commit()
+
+            messagebox.showinfo("Message","Votre bien a été ajouté !")
+
+            self.fenetre.destroy()
+
+            log=annonce.Annonce()
 
 
        
