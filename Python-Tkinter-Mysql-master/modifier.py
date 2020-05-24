@@ -15,7 +15,7 @@ class Modifie:
         self.win.resizable(width=False, height=False)
 
         ##changer le titre de la fenetre
-        self.win.title("Modifie une annonce")
+        self.win.title("MODIFIER UN BIEN | STEPHI PLACE")
 
         
         #Connexion à la base de données

@@ -17,7 +17,7 @@ if __name__=="__main__":
 
     mycursor = mydb.cursor()
 
-    mycursor.execute("SELECT * FROM type_membre")
+    mycursor.execute("SELECT * FROM dependance")
 
     myresult = mycursor.fetchall()
     print(myresult)
@@ -63,6 +63,9 @@ if __name__=="__main__":
      
 
     root.mainloop()
+
+    
+    mydb.close()
 
   
         

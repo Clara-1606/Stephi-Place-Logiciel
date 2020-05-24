@@ -26,7 +26,7 @@ class Accueil:
         self.fenetre.resizable(width=False, height=False)
 
         ##changer le titre de la fenetre
-        self.fenetre.title("Accueil")
+        self.fenetre.title("ACCUEIL | STEPHI PLACE")
 
         #Creer l'intérieur du cadre
         self.frame = Frame(self.fenetre, height=400, width=450)
@@ -68,6 +68,11 @@ class Accueil:
         if estAdmin==1 :
             self.boutonAdmin=Button(self.frame, text="Administration", bg="#CA1809", fg="white", state='disabled', font=('helvetica', 15, 'bold'))
             self.boutonAdmin.place(x= 110, y=260, width=250, height=30)
+
+
+        self.boutonDeconnexion=Button(self.frame, text="Se déconnecter", font=('helvetica',15,'bold')
+                             , bg='#CA1809', fg='white', command=self.deconnexion)
+        self.boutonDeconnexion.place(x=110, y=350, width=250, height=30)
             
         #Ouvre la fenetre
         self.fenetre.mainloop()
@@ -91,6 +96,14 @@ class Accueil:
 
         #Ouvre la nouvelle fenetre
         log = annonce.Annonce()
+
+    #Fonction pour se deconnecter
+    def deconnexion(self):
+
+        self.fenetre.destroy()
+
+        log=connexion.Connexion()
+        log.frame()
         
 
         

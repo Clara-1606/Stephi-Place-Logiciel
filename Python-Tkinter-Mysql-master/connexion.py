@@ -26,7 +26,7 @@ class Connexion:
         self.fenetre.resizable(width=False, height=False)
 
         ##changer le titre de la fenetre
-        self.fenetre.title("Connexion")
+        self.fenetre.title("CONNEXION | STEPHI PLACE")
         
 
     def frame(self):
@@ -41,24 +41,24 @@ class Connexion:
 
         #Creer le formulaire de connexion
         self.label = Label(self.frame, text="Connexion")
-        self.label.config(font=("Courier", 20, 'bold'))
+        self.label.config(font=("helvetica", 20, 'bold'))
         self.label.place(x=150, y = y + 150)
 
         self.labEmail = Label(self.frame, text="Email :")
-        self.labEmail.config(font=("Courier", 12, 'bold'))
+        self.labEmail.config(font=("helvetica", 12, 'bold'))
         self.labEmail.place(x=50, y= y + 230)
 
-        self.email = Entry(self.frame, font='Courier 12')
+        self.email = Entry(self.frame, font='helvetica 12')
         self.email.place(x=200, y= y + 230)
 
         self.labMdp = Label(self.frame, text="Mot de passe :")
-        self.labMdp.config(font=("Courier", 12, 'bold'))
+        self.labMdp.config(font=("helvetica", 12, 'bold'))
         self.labMdp.place(x=50, y=y+260)
 
-        self.mdp = Entry(self.frame,show='*', font='Courier 12')
+        self.mdp = Entry(self.frame,show='*', font='helvetica 12')
         self.mdp.place(x=200, y=y+260)
 
-        self.bouttonConnexion = Button(self.frame, text="Se connecter", font='Courier 15 bold',bg="#CA1809",fg="white", command=self.connexion)
+        self.bouttonConnexion = Button(self.frame, text="Se connecter", font='helvetica 15 bold',bg="#CA1809",fg="white", command=self.connexion)
         self.bouttonConnexion.place(x=140, y=y+310)
 
         self.fenetre.mainloop()

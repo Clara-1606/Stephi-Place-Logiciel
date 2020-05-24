@@ -41,8 +41,8 @@ class Bienvenue:
         
         #Titre
         self.titre = Label(self.frame, text="Bienvenue sur StephiPlace Software ")
-        self.titre.config(font=("Courier", 20, 'bold'))
-        self.titre.place(x=10, y=y+150)
+        self.titre.config(font=("helvetica", 20, 'bold'))
+        self.titre.place(x=40, y=y+150)
         
         #Bouton pour accéder à une nouvelle fenêtre
         self.bouttonContinue = Button(self.frame, text="Continue", font=('helvetica', 20, 'underline italic')
