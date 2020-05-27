@@ -3,13 +3,12 @@ from tkinter import messagebox #Importe les messages "popup"
 from tkinter import ttk #Pour avoir une liste déroulante
 import mysql.connector #Importe MySQL pour la base de données
 import annonce #Importe le fichier annonce.py
-import modifier #Importe le fichier modifier.py
 import datetime #Pour avoir la date du jour
 import connexion #Importe le fichier connexion.py
 
 
 
-class Creer: 
+class CreerBien: 
     
     def __init__(self):
         self.fenetre = Tk()
@@ -112,6 +111,13 @@ class Creer:
         
         self.superficie=Entry(self.frame, font='helvetica 12', width=4)
         self.superficie.place(x=140, y=  140)
+
+        self.labVendeur= Label(self.frame, text="Id Vendeur :")
+        self.labVendeur.config(font=("helvetica", 12, 'bold'))
+        self.labVendeur.place(x=500, y = 140)
+
+        self.vendeur=Entry(self.frame, font='helvetica 12', width=4)
+        self.vendeur.place(x=610, y=  140)
         
 
         #Adresses
@@ -296,10 +302,11 @@ class Creer:
             self.date,
             self.status,
             idAdresse,
-            self.enLigne
+            self.enLigne,
+            self.vendeur.get()
             )
             curseur= connexionBdd.cursor(buffered=True)
-            sql="INSERT INTO biens (id_type_bien, etage,nb_piece, nb_chambre,superficie,id_agence, descriptif, prix_min, prix_max, prix_vente, date_ajout, id_statut, id_adresse,en_ligne) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            sql="INSERT INTO biens (id_type_bien, etage,nb_piece, nb_chambre,superficie,id_agence, descriptif, prix_min, prix_max, prix_vente, date_ajout, id_statut, id_adresse,en_ligne, id_membre) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             curseur.execute(sql,donneeBien)
             connexionBdd.commit()
 

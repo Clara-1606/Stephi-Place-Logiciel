@@ -2,13 +2,13 @@ from tkinter import * #Importe Tkinter pour l'interface graphique
 from tkinter import messagebox #Importe les messages "popup"
 import accueil #Importe le fichier accueil.py
 import mysql.connector #Importe MySQL pour la base de données
-import connexion #Pour avoir le fichier connexion.py
+import administration #Importe le fichier administration.py
 from tkinter import ttk #Pour avoir une liste déroulante
 from hashlib import md5 #Pour hasher le mot de passe
 
 
 
-class Espace:
+class CreerAgent:
     def __init__(self):
         self.fenetre = Tk()
         #Reinilisaliser la fenetre et le fond d'ecran
@@ -19,7 +19,7 @@ class Espace:
         self.fenetre.resizable(width=False, height=False)
 
         #Changer le titre de la fenetre
-        self.fenetre.title("MON ESPACE | STEPHI PLACE")
+        self.fenetre.title("CREER UN AGENT IMMOBILIER | STEPHI PLACE")
 
         self.frame = Frame(self.fenetre, height=660, width=610)
         self.frame.place(x=20, y=20)
@@ -44,24 +44,6 @@ class Espace:
                  agence[30][0],agence[31][0],agence[32][0],agence[33][0],agence[34][0],agence[35][0],agence[36][0],agence[38][0],agence[38][0],agence[39][0],
                  agence[40][0],agence[41][0],agence[42][0],agence[43][0],agence[44][0],agence[45][0],agence[46][0],agence[48][0],agence[48][0],agence[49][0]]
 
-        #Avoir le numéro de l'agence
-        sql="SELECT id_agence FROM agent_immobilier WHERE mail=%s"
-        mail=(connexion.Connexion.staticmail,)
-        curseur.execute(sql,mail)
-        global idAgence
-        idAgence = curseur.fetchall()
-        idAgence= idAgence[0][0]
-        global agenceActuelle
-        agenceActuelle=idAgence - 1
-
-
-        #Récupérer les informations de l'agent immobilier
-
-        sql="SELECT prenom,nom,date_naissance,numero_telephone, mail, adresse, complement_adresse, ville, code_postal,agent_immobilier.id_adresse FROM agent_immobilier INNER JOIN adresse ON agent_immobilier.id_adresse=adresse.id_adresse WHERE mail=%s"
-        mail=(connexion.Connexion.staticmail,)
-        curseur.execute(sql,mail)
-        global info
-        info=curseur.fetchall()
 
         self.labTitre = Label(self.frame, text="Informations personnelles :",font=('helvetica', 20, 'underline bold'), fg="#CA1809")
         self.labTitre.place(x=130, y = 20)
@@ -73,7 +55,7 @@ class Espace:
         
         self.prenom = Entry(self.frame, font='helvetica 12', width=25)
         self.prenom.place(x=20, y= 120)
-        self.prenom.insert(END, info[0][0])
+
         
         self.labNom = Label(self.frame, text="Nom :")
         self.labNom.config(font=("helvetica", 12, 'bold'))
@@ -81,7 +63,7 @@ class Espace:
         
         self.nom =Entry(self.frame, font='helvetica 12', width=25)
         self.nom.place(x=360, y= 120)
-        self.nom.insert(END, info[0][1])
+
 
         
         self.labDateNaissance = Label(self.frame, text="Date de naissance : ")
@@ -90,7 +72,11 @@ class Espace:
 
         self.dateNaissance=Entry(self.frame, font='helvetica 12', width=25)
         self.dateNaissance.place(x=20, y=  200)
-        self.dateNaissance.insert(END, info[0][2])
+
+        self.labFormat= Label(self.frame, text="Format YYYY-MM-DD ")
+        self.labFormat.config(font=("helvetica", 8, 'bold'))
+        self.labFormat.place(x=20, y = 220)
+  
     
 
         self.labTelephone =Label(self.frame, text="Numéro de téléphone :")
@@ -99,68 +85,81 @@ class Espace:
         
         self.telephone =Entry(self.frame, font='helvetica 12', width=25)
         self.telephone.place(x=360, y=  200)
-        self.telephone.insert(END, info[0][3])
+
 
         self.labEmail = Label(self.frame, text="Email :")
         self.labEmail.config(font=("helvetica", 12, 'bold'))
-        self.labEmail.place(x=20, y = 250)
+        self.labEmail.place(x=20, y = 260)
         
         self.email =Entry(self.frame, font='helvetica 12', width=25)
-        self.email.place(x=20, y= 280)
-        self.email.insert(END, info[0][4])
+        self.email.place(x=20, y= 290)
+
         
         self.labMdp= Label(self.frame, text="Mot de passe :")
         self.labMdp.config(font=("helvetica", 12, 'bold'))
-        self.labMdp.place(x=360, y = 250)
+        self.labMdp.place(x=360, y = 260)
         
         self.mdp=Entry(self.frame, font='helvetica 12',show='*', width=25)
-        self.mdp.place(x=360, y=  280)
-        self.mdp.insert(END, "******")
+        self.mdp.place(x=360, y=  290)
 
         self.labAdresse=Label(self.frame, text="Adresse :")
         self.labAdresse.config(font=("helvetica", 12, 'bold'))
-        self.labAdresse.place(x=20, y = 330)
+        self.labAdresse.place(x=20, y=340)
+
         
         self.adresse=Entry(self.frame, font='helvetica 12', width=25)
-        self.adresse.place(x=20, y=  360)
-        self.adresse.insert(END, info[0][5])
+        self.adresse.place(x=20, y=  370)
+
         
         self.labComplementAdresse=Label(self.frame, text="Complément d'adresse :")
         self.labComplementAdresse.config(font=("helvetica", 12, 'bold'))
-        self.labComplementAdresse.place(x=360, y = 330)
+        self.labComplementAdresse.place(x=360, y = 340)
         
         self.complementAdresse=Entry(self.frame, font='helvetica 12', width=25)
-        self.complementAdresse.place(x=360, y= 360)
+        self.complementAdresse.place(x=360, y= 370)
 
         self.labVille =Label(self.frame, text="Ville :")
         self.labVille.config(font=("helvetica", 12, 'bold'))
-        self.labVille.place(x=20, y = 410)
+        self.labVille.place(x=20, y = 420)
         
         self.ville =Entry(self.frame, font='helvetica 12', width=25)
-        self.ville.place(x=20, y=  440)
-        self.ville.insert(END, info[0][7])
+        self.ville.place(x=20, y=  450)
+
         
         self.labCodePostal =Label(self.frame, text="Code Postal :")
         self.labCodePostal.config(font=("helvetica", 12, 'bold'))
-        self.labCodePostal.place(x=360, y = 410)
+        self.labCodePostal.place(x=360, y = 420)
         
         self.codePostal =Entry(self.frame, font='helvetica 12', width=25)
-        self.codePostal.place(x=360, y= 440)
-        self.codePostal.insert(END, info[0][8])
+        self.codePostal.place(x=360, y= 450)
+
 
         self.labAgence =Label(self.frame, text="Agence :")
         self.labAgence.config(font=("helvetica", 12, 'bold'))
-        self.labAgence.place(x=20, y = 490)
+        self.labAgence.place(x=20, y = 500)
 
 
         self.listeAgence = ttk.Combobox(self.frame, values=agences, width=35)
-        self.listeAgence.current(agenceActuelle)
-        self.listeAgence.place(x=20, y = 520)
+        self.listeAgence.current(0)
+        self.listeAgence.place(x=20, y = 530)
 
+        global var
+        var = IntVar()
+
+
+        self.labAdmin =Label(self.frame, text="Est admin :")
+        self.labAdmin.config(font=("helvetica", 12, 'bold'))
+        self.labAdmin.place(x=360, y = 490)
+        
+        self.adminOui = Radiobutton(self.frame, text="Oui", variable=var, value=1)
+        self.adminOui.place(x=360, y = 520 )
+ 
+        self.adminNon = Radiobutton(self.frame, text="Non", variable=var, value=0)
+        self.adminNon.place(x=420, y = 520 )
         
 
          #Boutons valider et retour
-        self.bouttonValider = Button(self.frame, text="Modifier", font='helvetica 15 bold',bg="#CA1809",fg="white", command=self.modifier)
+        self.bouttonValider = Button(self.frame, text="Ajouter", font='helvetica 15 bold',bg="#CA1809",fg="white", command=self.modifier)
         self.bouttonValider.place(x=250, y=620, width=110, height=25)
 
         self.boutonRetour=Button(self.frame, text="Retour", font=('helvetica',15,'bold')
@@ -175,7 +174,7 @@ class Espace:
 
         self.fenetre.destroy()
 
-        log=accueil.Accueil()
+        log=administration.Administration()
 
 
     def modifier(self):
@@ -194,7 +193,6 @@ class Espace:
             self.complementAdresse.get(),
             self.ville.get(),
             self.codePostal.get(),
-            info[0][9]
             )
     
 
@@ -204,9 +202,13 @@ class Espace:
         if self.prenom.get()=="" or self.nom.get()=="" or self.dateNaissance.get()=="" or self.adresse.get()=="" or self.ville.get()=="" or self.codePostal.get()=="" or self.telephone.get()=="" or self.email.get()=="" :
              messagebox.showinfo("Attention!","Veuillez renseigner tous les champs.")
         else :
-            sql="UPDATE adresse SET adresse=%s, complement_adresse=%s, ville=%s, code_postal=%s WHERE id_adresse=%s"
+            sql="INSERT INTO adresse (adresse, complement_adresse,code_postal,ville) VALUE (%s,%s,%s,%s)"
             curseur.execute(sql,infoAdresse)
             connexionBdd.commit()
+
+            curseur.execute("SELECT id_adresse FROM adresse ORDER BY id_adresse DESC")
+            idAdresse=curseur.fetchall()
+            idAdresse=idAdresse[0][0]
 
 
             #Trouver l'id de l'agence choisis
@@ -219,6 +221,7 @@ class Espace:
             mdp=self.mdp.get()
             mdp=mdp.encode()
             mdpHash = md5(mdp).hexdigest()
+            
 
             infoPerso = (
                 self.prenom.get(),
@@ -226,23 +229,20 @@ class Espace:
                 self.dateNaissance.get(),
                 self.telephone.get(),
                 self.email.get(),
-                idAgence,
                 mdpHash,
-                info[0][9]
+                idAgence,
+                idAdresse,
+                var.get()
                 )
+            print(infoPerso)
 
-            sql="UPDATE agent_immobilier SET prenom=%s, nom=%s, date_naissance=%s, numero_telephone=%s, mail=%s, id_agence=%s, mot_de_passe=%s WHERE id_adresse=%s"
+            sql="INSERT INTO agent_immobilier (prenom, nom, date_naissance, numero_telephone, mail, mot_de_passe, id_agence, id_adresse, est_admin) VALUES ( %s,%s,%s,%s,%s,%s,%s,%s,%s)"
             curseur.execute(sql,infoPerso)
             connexionBdd.commit()
 
-            messagebox.showinfo("Message","Vos informations ont bien été modifié.")
-
-
-            
-
+            messagebox.showinfo("Message","L'agent a bien été ajouté.")
 
 
             self.fenetre.destroy()
 
-            log=Espace()
-        
+            log=CreerAgent()

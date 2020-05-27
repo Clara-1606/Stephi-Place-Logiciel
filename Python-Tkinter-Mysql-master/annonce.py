@@ -1,8 +1,8 @@
 from tkinter import * #Importe Tkinter pour l'interface graphique
 import mysql.connector #Importe MySQL 
 import connexion #Importe le fichier connexion.py
-import modifier #Importe le fichier modifier.py
-import creer #Importe le fichier creer.py
+import modifier_bien #Importe le fichier modifier.py
+import creer_bien #Importe le fichier creer.py
 import accueil #Importe le fichier accueil.py
  
 
@@ -173,7 +173,7 @@ class Annonce:
         self.fenetre.destroy()
 
         #Ouvre la nouvelle fenetre
-        log = modifie.Modifie()
+        log = modifier_bien.Modifier()
 
 
 #Fonction pour accéder à la page pour créer un bien
@@ -182,7 +182,7 @@ class Annonce:
         self.fenetre.destroy()
 
         #Ouvre la nouvelle fenetre
-        log = creer.Creer()
+        log = creer_bien.CreerBien()
            
 
             

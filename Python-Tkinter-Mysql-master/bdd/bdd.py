@@ -14,7 +14,7 @@ curseur = connexionBdd.cursor()
 #Fonction pour accéder à la base pour la connexion
 def connexionUtilisateur(tup):
     try:
-        curseur.execute("SELECT * FROM `agent_immobilier` WHERE `mail`=%s AND `prenom`=%s",tup)
+        curseur.execute("SELECT * FROM `agent_immobilier` WHERE `mail`=%s AND `mot_de_passe`=%s",tup)
         return (curseur.fetchone())
     except:
         return False

@@ -2,6 +2,7 @@ from tkinter import * #Importe Tkinter pour l'interface graphique
 from tkinter import messagebox #Importe les messages "popup"
 import bdd.bdd #On importe le fichier bdd qui se trouve dans le dossier bdd
 import accueil #Importe le fichier accueil.py
+from hashlib import md5
 
 
 class Connexion:
@@ -64,11 +65,19 @@ class Connexion:
         self.fenetre.mainloop()
     
     def connexion(self):
+
+        #On hash le mot de passe pour le vérifié après dans la base
+        mdp = self.mdp.get()
+        mdp = mdp.encode()
+        mdpHash = md5(mdp).hexdigest()
+
+
+        
         #Mettre les donnees dans un tuple 
         Connexion.staticmail=self.email.get()
         donnee = (
             Connexion.staticmail,
-            self.mdp.get()
+            mdpHash
         )
         #Validations si les champs sont bien remplis
         if self.email.get() == "":

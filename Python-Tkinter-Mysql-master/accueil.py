@@ -3,6 +3,7 @@ import mysql.connector #Importe MySQL
 import espace #Importe le fichier espace.py
 import annonce #Importe le fichier annonce.py
 import connexion #Importe le fichier connexion.py
+import administration #Importe le fichier administration
 
 
 
@@ -66,7 +67,7 @@ class Accueil:
 
         #Si l'agent est Admin un bouton supplémentaire apparait
         if estAdmin==1 :
-            self.boutonAdmin=Button(self.frame, text="Administration", bg="#CA1809", fg="white", state='disabled', font=('helvetica', 15, 'bold'))
+            self.boutonAdmin=Button(self.frame, text="Administration", command=self.administration, bg="#CA1809", fg="white",font=('helvetica', 15, 'bold'))
             self.boutonAdmin.place(x= 110, y=260, width=250, height=30)
 
 
@@ -96,6 +97,12 @@ class Accueil:
 
         #Ouvre la nouvelle fenetre
         log = annonce.Annonce()
+
+
+    def administration(self):
+        self.fenetre.destroy()
+
+        log=administration.Administration()
 
     #Fonction pour se deconnecter
     def deconnexion(self):
