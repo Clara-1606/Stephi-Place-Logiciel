@@ -8,7 +8,8 @@ import connexion #Importe le fichier connexion.py
 
 
 
-class CreerBien: 
+class CreerBien:
+
     
     def __init__(self):
         self.fenetre = Tk()
@@ -278,59 +279,80 @@ class CreerBien:
         if var.get()==0 or self.nbPiece.get()=="" or self.nbChambre.get()=="" or self.superficie.get()=="" or self.adresse.get()=="" or self.ville.get()=="" or self.codePostal.get()=="" or self.superficieDep.get()=="" or self.description.get()=="" or self.prixMin.get()=="" or self.prixMax.get()=="" or self.prixVente.get()=="" :
              messagebox.showinfo("Attention!","Veuillez renseigner tous les champs.")
         else :
-            sql="INSERT INTO adresse (adresse, complement_adresse,code_postal,ville) VALUE (%s,%s,%s,%s)"
-            curseur.execute(sql,donneeAdresse)
-            connexionBdd.commit()
+            try:
+                testEtage = int(self.etage.get()) #On vérifie que c'est un nombre
+                testPiece = int(self.etage.get())
+                testChambre = int(self.etage.get())
+                testSuperficie = int(self.etage.get())
+                testSuperficieDep = int(self.etage.get())
+                testVendeur = int(self.etage.get())
+                testPrixMin = int(self.etage.get())
+                testPrixMax = int(self.etage.get())
+                testPrixVente = int(self.etage.get())
+                
 
-            curseur.execute("SELECT id_adresse FROM adresse ORDER BY id_adresse DESC")
-            idAdresse=curseur.fetchall()
-            idAdresse=idAdresse[0][0]
 
-            self.enLigne=1
+            except:
+                messagebox.showinfo("Message","Il y a des erreurs de saisies.")
+                erreur=1
+                
+            if erreur>1 :
+                messagebox.showinfo("Message","Veuillez rentrer des données correctes.")
+            else :  
             
-            donneeBien = (
-            var.get(),
-            self.etage.get(),
-            self.nbPiece.get(),
-            self.nbChambre.get(),
-            self.superficie.get(),
-            idAgence,
-            self.description.get(),
-            self.prixMin.get(),
-            self.prixMax.get(),
-            self.prixVente.get(),
-            self.date,
-            self.status,
-            idAdresse,
-            self.enLigne,
-            self.vendeur.get()
-            )
-            curseur= connexionBdd.cursor(buffered=True)
-            sql="INSERT INTO biens (id_type_bien, etage,nb_piece, nb_chambre,superficie,id_agence, descriptif, prix_min, prix_max, prix_vente, date_ajout, id_statut, id_adresse,en_ligne, id_membre) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-            curseur.execute(sql,donneeBien)
-            connexionBdd.commit()
+                sql="INSERT INTO adresse (adresse, complement_adresse,code_postal,ville) VALUE (%s,%s,%s,%s)"
+                curseur.execute(sql,donneeAdresse)
+                connexionBdd.commit()
+
+                curseur.execute("SELECT id_adresse FROM adresse ORDER BY id_adresse DESC")
+                idAdresse=curseur.fetchall()
+                idAdresse=idAdresse[0][0]
+
+                self.enLigne=1
+                
+                donneeBien = (
+                var.get(),
+                self.etage.get(),
+                self.nbPiece.get(),
+                self.nbChambre.get(),
+                self.superficie.get(),
+                idAgence,
+                self.description.get(),
+                self.prixMin.get(),
+                self.prixMax.get(),
+                self.prixVente.get(),
+                self.date,
+                self.status,
+                idAdresse,
+                self.enLigne,
+                self.vendeur.get()
+                )
+                curseur= connexionBdd.cursor(buffered=True)
+                sql="INSERT INTO biens (id_type_bien, etage,nb_piece, nb_chambre,superficie,id_agence, descriptif, prix_min, prix_max, prix_vente, date_ajout, id_statut, id_adresse,en_ligne, id_membre) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                curseur.execute(sql,donneeBien)
+                connexionBdd.commit()
 
 
-            curseur.execute("SELECT id_bien FROM biens ORDER BY id_bien DESC")
-            idBien=curseur.fetchall()
-            idBien=idBien[0][0]
+                curseur.execute("SELECT id_bien FROM biens ORDER BY id_bien DESC")
+                idBien=curseur.fetchall()
+                idBien=idBien[0][0]
 
-            donneeDep= (
-            self.listeDep.get(),
-            self.superficieDep.get(),
-            idBien
-            )
+                donneeDep= (
+                self.listeDep.get(),
+                self.superficieDep.get(),
+                idBien
+                )
 
 
-            sql="INSERT INTO dependance(nom_dependance,superficie,id_bien) VALUE (%s,%s,%s)"       
-            curseur.execute(sql,donneeDep)
-            connexionBdd.commit()
+                sql="INSERT INTO dependance(nom_dependance,superficie,id_bien) VALUE (%s,%s,%s)"       
+                curseur.execute(sql,donneeDep)
+                connexionBdd.commit()
 
-            messagebox.showinfo("Message","Votre bien a été ajouté !")
+                messagebox.showinfo("Message","Votre bien a été ajouté !")
 
-            self.fenetre.destroy()
+                self.fenetre.destroy()
 
-            log=annonce.Annonce()
+                log=annonce.Annonce()
 
 
        

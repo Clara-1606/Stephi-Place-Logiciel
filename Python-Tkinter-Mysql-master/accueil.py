@@ -35,16 +35,16 @@ class Accueil:
 
         #Boutons
         self.boutonEspace=Button(self.frame, text="Mon Espace", command=self.espace, bg="#CA1809", fg="white", font=('helvetica', 15, 'bold'))
-        self.boutonEspace.place(x= 110, y=100, width=250, height=30)
+        self.boutonEspace.place(x= 100, y=100, width=250, height=30)
 
         self.boutonAnnonce=Button(self.frame, text="Gestion des annonces", command=self.annonce, bg="#CA1809",fg="white", font=('helvetica', 15, 'bold'))
-        self.boutonAnnonce.place(x= 110, y=140, width=250, height=30)
+        self.boutonAnnonce.place(x= 100, y=140, width=250, height=30)
         
         self.boutonDocument=Button(self.frame, text="Gestion des documents", bg="#CA1809", fg="white", state='disabled', font=('helvetica', 15, 'bold'))
-        self.boutonDocument.place(x= 110, y=180, width=250, height=30)
+        self.boutonDocument.place(x= 100, y=180, width=250, height=30)
 
         self.boutonProposition=Button(self.frame, text="Gestion des propositions", bg="#CA1809",fg="white", state="disabled", font=('helvetica', 15, 'bold'))
-        self.boutonProposition.place(x= 110, y=220, width=250, height=30)
+        self.boutonProposition.place(x= 100, y=220, width=250, height=30)
 
 
         #Connexion à la base de données
@@ -68,12 +68,12 @@ class Accueil:
         #Si l'agent est Admin un bouton supplémentaire apparait
         if estAdmin==1 :
             self.boutonAdmin=Button(self.frame, text="Administration", command=self.administration, bg="#CA1809", fg="white",font=('helvetica', 15, 'bold'))
-            self.boutonAdmin.place(x= 110, y=260, width=250, height=30)
+            self.boutonAdmin.place(x= 100, y=260, width=250, height=30)
 
 
         self.boutonDeconnexion=Button(self.frame, text="Se déconnecter", font=('helvetica',15,'bold')
                              , bg='#CA1809', fg='white', command=self.deconnexion)
-        self.boutonDeconnexion.place(x=110, y=350, width=250, height=30)
+        self.boutonDeconnexion.place(x=100, y=350, width=250, height=30)
             
         #Ouvre la fenetre
         self.fenetre.mainloop()

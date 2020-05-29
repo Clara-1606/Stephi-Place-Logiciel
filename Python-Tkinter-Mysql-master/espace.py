@@ -55,6 +55,7 @@ class Espace:
         agenceActuelle=idAgence - 1
 
 
+
         #Récupérer les informations de l'agent immobilier
 
         sql="SELECT prenom,nom,date_naissance,numero_telephone, mail, adresse, complement_adresse, ville, code_postal,agent_immobilier.id_adresse FROM agent_immobilier INNER JOIN adresse ON agent_immobilier.id_adresse=adresse.id_adresse WHERE mail=%s"

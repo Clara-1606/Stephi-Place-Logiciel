@@ -45,8 +45,8 @@ class CreerAgent:
                  agence[40][0],agence[41][0],agence[42][0],agence[43][0],agence[44][0],agence[45][0],agence[46][0],agence[48][0],agence[48][0],agence[49][0]]
 
 
-        self.labTitre = Label(self.frame, text="Informations personnelles :",font=('helvetica', 20, 'underline bold'), fg="#CA1809")
-        self.labTitre.place(x=130, y = 20)
+        self.labTitre = Label(self.frame, text="Ajouter un agent immobilier :",font=('helvetica', 20, 'underline bold'), fg="#CA1809")
+        self.labTitre.place(x=120, y = 20)
 
 
         self.labPrenom = Label(self.frame, text="Prenom :")
@@ -75,7 +75,7 @@ class CreerAgent:
 
         self.labFormat= Label(self.frame, text="Format YYYY-MM-DD ")
         self.labFormat.config(font=("helvetica", 8, 'bold'))
-        self.labFormat.place(x=20, y = 220)
+        self.labFormat.place(x=20, y = 225)
   
     
 
@@ -149,17 +149,17 @@ class CreerAgent:
 
         self.labAdmin =Label(self.frame, text="Est admin :")
         self.labAdmin.config(font=("helvetica", 12, 'bold'))
-        self.labAdmin.place(x=360, y = 490)
+        self.labAdmin.place(x=360, y = 500)
         
         self.adminOui = Radiobutton(self.frame, text="Oui", variable=var, value=1)
-        self.adminOui.place(x=360, y = 520 )
+        self.adminOui.place(x=360, y = 530 )
  
         self.adminNon = Radiobutton(self.frame, text="Non", variable=var, value=0)
-        self.adminNon.place(x=420, y = 520 )
+        self.adminNon.place(x=420, y = 530 )
         
 
          #Boutons valider et retour
-        self.bouttonValider = Button(self.frame, text="Ajouter", font='helvetica 15 bold',bg="#CA1809",fg="white", command=self.modifier)
+        self.bouttonValider = Button(self.frame, text="Ajouter", font='helvetica 15 bold',bg="#CA1809",fg="white", command=self.creer)
         self.bouttonValider.place(x=250, y=620, width=110, height=25)
 
         self.boutonRetour=Button(self.frame, text="Retour", font=('helvetica',15,'bold')
@@ -177,7 +177,7 @@ class CreerAgent:
         log=administration.Administration()
 
 
-    def modifier(self):
+    def creer(self):
 
         #Connexion à la base
         connexionBdd = mysql.connector.connect(

@@ -35,13 +35,13 @@ class Administration:
 
         #Boutons
         self.boutonAjouterAgent=Button(self.frame, text="Ajouter un agent immobilier", command=self.creerAgent, bg="#CA1809", fg="white", font=('helvetica', 15, 'bold'))
-        self.boutonAjouterAgent.place(x= 100, y=200, width=270, height=30)
+        self.boutonAjouterAgent.place(x= 90, y=120, width=280, height=40)
 
         self.boutonModifierAgence=Button(self.frame, text="Modifier les frais d'agence", command=self.modifierAgence, bg="#CA1809",fg="white", font=('helvetica', 15, 'bold'))
-        self.boutonModifierAgence.place(x= 100, y=240, width=270, height=30)
+        self.boutonModifierAgence.place(x= 90, y=180, width=280, height=40)
 
         self.boutonRetour=Button(self.frame, text="Retour", command=self.retour, bg="#CA1809",fg="white", font=('helvetica', 15, 'bold'))
-        self.boutonRetour.place(x= 100, y=300, width=270, height=30)
+        self.boutonRetour.place(x= 90, y=270, width=280, height=40)
         
             
         #Ouvre la fenetre
