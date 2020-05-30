@@ -2,9 +2,9 @@
 -- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3308
--- Généré le :  sam. 23 mai 2020 à 13:37
--- Version du serveur :  8.0.18
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  sam. 30 mai 2020 à 15:51
+-- Version du serveur :  10.4.10-MariaDB
 -- Version de PHP :  7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `adresse` (
   `code_postal` char(5) NOT NULL,
   `ville` varchar(32) NOT NULL,
   PRIMARY KEY (`id_adresse`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `adresse`
@@ -144,8 +144,8 @@ INSERT INTO `adresse` (`id_adresse`, `adresse`, `complement_adresse`, `code_post
 (98, '604 Douglas Av.', NULL, '83069', 'Hyères'),
 (99, '8575 Johnstown Road', NULL, '11262', 'Narbonne'),
 (100, '1, rue des Bouchers', NULL, '13004', 'Arles'),
-(101, '4, rue Royale', NULL, '75056', 'Paris'),
-(102, '89 Strong St.', NULL, '13055', 'Marseille'),
+(101, '6, rue Royale', 'Paris', '75056', 'Paris'),
+(102, '89 Strong St.', '', '13055', 'Marseille'),
 (103, '66 St Kilda Road', NULL, '69123', 'Lyon'),
 (104, '567, rue des Cinquante Otages', NULL, '31555', 'Toulouse'),
 (105, 'Erling Skakkes gate 758', NULL, '6088', 'Nice'),
@@ -244,7 +244,7 @@ INSERT INTO `adresse` (`id_adresse`, `adresse`, `complement_adresse`, `code_post
 (198, '6044 Douglas Av.', NULL, '83069', 'Hyères'),
 (199, '8544 Johnstown Road', NULL, '11262', 'Narbonne'),
 (200, '14, rue des Bouchers', NULL, '13004', 'Arles'),
-(201, '88, rue Royale', NULL, '75056', 'Paris'),
+(201, '80, rue Royale', '', '75056', 'Paris'),
 (202, '898 Strong St.', NULL, '13055', 'Marseille'),
 (203, '668 St Kilda Road', NULL, '69123', 'Lyon'),
 (204, '5678, rue des Cinquante Otages', NULL, '31555', 'Toulouse'),
@@ -393,7 +393,16 @@ INSERT INTO `adresse` (`id_adresse`, `adresse`, `complement_adresse`, `code_post
 (347, 'Maubelstr. 906', NULL, '10387', 'Troyes'),
 (348, '6877 Douglas Av.', NULL, '83069', 'Hyères'),
 (349, '86 Johnstown Road', NULL, '11262', 'Narbonne'),
-(350, '126, rue des Bouchers', NULL, '13004', 'Arles');
+(350, '126, rue des Bouchers', NULL, '13004', 'Arles'),
+(363, '2', '1', '11', '11'),
+(365, '3', '33', '11', '1'),
+(366, '1', '1', '1', '1'),
+(367, '1', '', '1', '13320'),
+(368, '45 lot', '', 'bouc', '13320'),
+(369, '45 lot', '', 'bouc', '13320'),
+(370, '45 lot', '', 'bouc', '13320'),
+(371, '45 lot', '', 'Bouc', '13320'),
+(372, '45 lot', '', 'Bouc', '13320');
 
 -- --------------------------------------------------------
 
@@ -409,14 +418,14 @@ CREATE TABLE IF NOT EXISTS `agence` (
   `id_adresse` int(11) NOT NULL,
   PRIMARY KEY (`id_agence`),
   KEY `fk_agence_adresse1_idx` (`id_adresse`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `agence`
 --
 
 INSERT INTO `agence` (`id_agence`, `nom_agence`, `frais_agence`, `id_adresse`) VALUES
-(1, 'Paris Agence', 1.2, 151),
+(1, 'Paris Agence', 1.5, 151),
 (2, 'Marseille Agence', 1.3, 152),
 (3, 'Lyon Agence', 1.4, 153),
 (4, 'Toulouse Agence', 1.5, 154),
@@ -489,63 +498,64 @@ CREATE TABLE IF NOT EXISTS `agent_immobilier` (
   UNIQUE KEY `mail_UNIQUE` (`mail`),
   KEY `fk_agent_immobilier_adresse1_idx` (`id_adresse`),
   KEY `fk_agent_immobilier_agence1_idx` (`id_agence`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `agent_immobilier`
 --
 
 INSERT INTO `agent_immobilier` (`id_agent`, `prenom`, `nom`, `mail`, `mot_de_passe`, `date_naissance`, `numero_telephone`, `est_admin`, `id_adresse`, `id_agence`) VALUES
-(1, 'Oliver', 'Ianson', 'Oliver_Ianson8973@hourpy.biz', '$2y$10$Et/GdMxmPwmf0YP5mAja5uNgj7miTu0jeUScfTHk/1R1P0GtE9wEa', '1997-01-08', '0620305040', 1, 101, 1),
-(2, 'Chad', 'Goodman', 'Chad_Goodman7035@extex.org', '$2y$10$T0uVaFXYT48qZwwUdWFF1.KWHoJMbFud7bKnwLkPBbXB2VJWCk78m', '1994-10-25', '0625426252', 1, 102, 2),
-(3, 'Tony', 'Shea', 'Tony_Shea8173@yahoo.com', '$2y$10$eFYo2942eh4vCcpIBu2K0uUa9hmWMpndF7ZXu3VJuP/4EfvNsI56O', '1980-08-05', '0612324565', 1, 103, 3),
-(4, 'Oliver', 'Crawford', 'Oliver_Crawford433@nimogy.biz', '$2y$10$O.NPidW6LXPLuZyRnnU2BuQ.mj1MGAS0pt3IGBOudG0TYNALeNeom', '1986-07-14', '06325285645', 1, 104, 4),
-(5, 'Boris', 'Ainsworth', 'Boris_Ainsworth5928@dionrab.com', '$2y$10$6hsMQ8SNdxll54JujxLV1O7rJgRAvsBRr8TEuMS.6lpOIEijE4Xcq', '1992-02-18', '063285964052', 1, 105, 5),
-(6, 'Jayden', 'Potts', 'Jayden_Potts356@nickia.com', '$2y$10$C0B7MFApcyUrBRMLBjKRIO0L.gESEzhHCc63mPdy1mWXl0U/EiMk2', '1986-11-10', '0623820152', 0, 106, 6),
-(7, 'Sabrina', 'Stone', 'Sabrina_Stone6419@corti.com', '$2y$10$cqxPgf/EiOrb1PYQ6B2Q4evZx5yFIc6nQx1Cg4ESf8tiaw4/S3px6', '1993-05-20', '062342758696', 0, 107, 7),
-(8, 'Mara', 'Harris', 'Mara_Harris2352@bungar.biz', '$2y$10$8ybDsHjs4dw38jfPqtJI6eQxSOIDgBeKxu0GusxkLg2zbTpqjmC8i', '1991-05-16', '063696852512', 0, 108, 8),
-(9, 'Owen', 'Welsch', 'Owen_Welsch8524@supunk.biz', '$2y$10$TZ5l3eeW5KBYmtHcJwhCS.QZWBV7370MFlnefAwaJqOt83nurVlZi', '1990-08-19', '0652638519', 0, 109, 9),
-(10, 'Bob', 'Rainford', 'Bob_Rainford1433@gembat.biz', '$2y$10$QQlKfoEqmuSn9Cr.eQxg8ujuwMzEsLP3hmpBaGeLXFH2sqZN2EVEK', '1994-10-30', '0623427385', 0, 110, 10),
-(11, 'Alexander', 'Shields', 'Alexander_Shields1884@nimogy.biz', '$2y$10$p05bxcj2XslCbCzG5V/yfOeqrhUL142925oc2Hfxnf5.wVZTtKfJK', '1977-04-11', '0672428292', 0, 111, 11),
-(12, 'Sloane', 'Greenwood', 'Sloane_Greenwood3918@qater.org', '$2y$10$utg8HgMe5oZwGH/MpXp54.yPHk/nHRHyo976BmpQvNluqHiZFPXQS', '1980-05-10', '0652820055', 0, 112, 12),
-(13, 'Percy', 'Grady', 'Percy_Grady8797@twipet.com', '$2y$10$eIWtn5Gmfm5sYKheS/kMxOdK9OKXw9L4XkPbMh37uXg2R6nyKnsTG', '1974-06-18', '0652020050', 0, 113, 13),
-(14, 'Lexi', 'Porter', 'Lexi_Porter7296@tonsy.org', '$2y$10$sm935Cvfda0psC3y42zVp.1lPYxZLuqUCqG6KpoNPJoEwQdvGiqEy', '1994-10-16', '0685964332', 0, 114, 14),
-(15, 'Rebecca', 'Rodgers', 'Rebecca_Rodgers5550@elnee.tech', '$2y$10$XFBiMzxRIZUCeXbUiFsxLOzIUGI/ThrKES8eTksqRyyDhQQyauNM2', '1992-03-02', '0642528210', 0, 115, 15),
-(16, 'Henry', 'Gray', 'Henry_Gray4747@bauros.biz', '$2y$10$70hyYKuyboX3/Sy7OfYdUuAICTGTSVV2rZHSw.j2LWD8aHRKXsCt2', '1991-05-01', '0642528503', 0, 116, 16),
-(17, 'Chelsea', 'Khan', 'Chelsea_Khan1875@infotech44.tech', '$2y$10$3nsjSaUBifPSHBHXo/MaQuAAOa59mgt5U2q2qPAZ6sw.Xw1y6w/6K', '1998-02-12', '0632528550', 0, 117, 17),
-(18, 'Doug', 'Kennedy', 'Doug_Kennedy7802@yahoo.com', '$2y$10$nGt9DCzl2AEdlbjIyqGX/OEjkX29ggGflbnwuThMbCNtipuDPbldS', '2000-01-08', '0642528270', 0, 118, 18),
-(19, 'Tyson', 'Bailey', 'Tyson_Bailey234@ubusive.com', '$2y$10$38.Hs25N2DpTOAnEPrxfg.eKxIzB44oQRD7mkyYPCCy6mn93pZkXa', '1991-11-05', '0652639373', 0, 119, 19),
-(20, 'Marvin', 'Oswald', 'Marvin_Oswald7376@deavo.com', '$2y$10$FOmGJR28cW6v8TQf33qUYurjn/un0g3vxWEs2WjAEuWbil99eSVua', '1987-08-16', '0603025285', 0, 120, 20),
-(21, 'Greta', 'Pearce', 'Greta_Pearce4753@sheye.org', '$2y$10$J5nwa7WpMwwsT851unLe9.UFW6yIS2jy0l/D9lXTzp0nSF2i4OCji', '1978-11-07', '0652825080', 0, 121, 21),
-(22, 'Lucas', 'Jarvis', 'Lucas_Jarvis8377@famism.biz', '$2y$10$uru9bhtoUu.wBVA4pwjdJ.6YmB0t1pTWazzmW4vj9C4n4NQdJGCbq', '1991-03-16', '0652427001', 0, 122, 22),
-(23, 'Elisabeth', 'Emmett', 'Elisabeth_Emmett1854@vetan.org', '$2y$10$VIIn0Hz7W5Aed6SfyEmgDO7lEfzWZYm/E6HbEIoWCIjG6qoSDKVA6', '1980-05-06', '0652728506', 0, 123, 23),
-(24, 'Sebastian', 'Lambert', 'Sebastian_Lambert4752@zorer.org', '$2y$10$exVT6CkO.urG2na4xntXMu3xPf7P4B0xy5p7P2KR2.8Ru6r21dnJq', '1992-01-10', '0652630809', 0, 124, 24),
-(25, 'Rosemary', 'Morley', 'Rosemary_Morley2841@bungar.biz', '$2y$10$bqbU/pU8XcYaNeXN3NrpFeOwxrxdn8YSczrKSJxJGc4v8NMH048Um', '1989-11-18', '0652820708', 0, 125, 25),
-(26, 'Marilyn', 'Roberts', 'Marilyn_Roberts4039@supunk.biz', '$2y$10$xtX5NMDxF.oi.wZXN/xTPe0ZRp4eMMwCSxHywKGjyF0WEW7hKkNkK', '1970-05-06', '0652823080', 0, 126, 26),
-(27, 'Penny', 'Leigh', 'Penny_Leigh6001@ubusive.com', '$2y$10$q4uqsCibAhVDj3rVlsDgnOIeZTrT5y3MosuiLUolYLMD30n4iKxEG', '1984-05-14', '0652420102', 0, 127, 27),
-(28, 'Boris', 'Dunbar', 'Boris_Dunbar1309@bauros.biz', '$2y$10$Og1LCWi8o34mOijEaWdGUOsb77fkOHpUKm1fGNS8FpHvR3sE88UJC', '1992-12-01', '0652070809', 0, 128, 28),
-(29, 'Julian', 'Holt', 'Julian_Holt6862@cispeto.com', '$2y$10$qLMr9AaPcUjYPiIAvpqcgOuenyM.k7GlHdXizVw0PCTs.dLEFnCdK', '1976-06-26', '0620200455', 0, 129, 29),
-(30, 'Vera', 'Kelly', 'Vera_Kelly5807@womeona.net', '$2y$10$.gCSROhSm/B7vi6E6SfQ7ekMc5mcDp.QRUzjBa.xNUDwV9DQuacVm', '1988-08-08', '0652728545', 0, 130, 30),
-(31, 'Irene', 'Upsdell', 'Irene_Upsdell863@bulaffy.com', '$2y$10$mHXG1XAy1hl2CO.OzCldq.jd4o2t3H6FG8oB7TdeiJDWbyIIJq7n6', '1992-08-19', '0601035234', 0, 131, 31),
-(32, 'Callie', 'Farrow', 'Callie_Farrow727@gmail.com', '$2y$10$p59ga5u2jDuvm0xdv6GCr.hDrPtssY.65xCoirgaqA7TyA.eOHv7K', '1971-02-05', '0600527908', 0, 132, 32),
-(33, 'Britney', 'Neville', 'Britney_Neville426@nanoff.biz', '$2y$10$6Ic9OEtKJr2BNj3FD3/sz.KYS/t5YFevL53nghB7NYM4t52p2XrkG', '1982-11-01', '06110585', 0, 133, 33),
-(34, 'Doris', 'Haines', 'Doris_Haines1566@gompie.com', '$2y$10$haCV/GYMscOOIqTekZngG.8OSgQnExTeKNJhHqyK4qRLgsYmCwoBO', '1995-01-30', '0678888563', 0, 134, 34),
-(35, 'Lara', 'Fox', 'Lara_Fox418@guentu.biz', '$2y$10$20vrHz67r4tHVVWmUdlltufBk06QAWu3mIXRWlWo2QsJRJRyBJn6q', '1980-02-09', '0612350155', 0, 135, 35),
-(36, 'Cedrick', 'Snell', 'Cedrick_Snell8368@cispeto.com', '$2y$10$LTEvhvhb6lU2fZekvDZOheqa6fERymLXV3dIYmf8Ap2.aNSB6FYRG', '1983-09-10', '0633050855', 0, 136, 36),
-(37, 'Barry', 'Page ', 'Barry_Page 34@irrepsy.com', '$2y$10$rPWasyhFuldfhwfsPrP.reV2VTyZDCKa8yXDfiQEHBMdVGbm5wpZW', '1986-09-30', '0652724511', 0, 137, 37),
-(38, 'Logan', 'Pierce', 'Logan_Pierce1847@typill.biz', '$2y$10$NIwIyp.J9qHWbZOyQ7ipDunMQn0HRtkbPiP3IZQjWaKsT2lfbikMK', '1988-04-04', '0632550401', 0, 138, 38),
-(39, 'Nate', 'Stuart', 'Nate_Stuart5466@mafthy.com', '$2y$10$DrNnl8mw.bqs/84MeJhp2ufj4J0A.v8pdB0mmIduH1ngvORh/8o5e', '1983-11-14', '0688055506', 0, 139, 39),
-(40, 'Joyce', 'Plumb', 'Joyce_Plumb8051@typill.biz', '$2y$10$BdSZE0io5MmNaANLt1uWnOD2m9kJIcksqbrWYTQJfcHmSmEy/sC5q', '1973-06-15', '0612332505', 0, 140, 40),
-(41, 'Lana', 'Davies', 'Lana_Davies2607@mafthy.com', '$2y$10$DdXTaNdIMm5N//wbxVtBGOCy0LZ80egDOGYuXlwy4v1nbvC2COnme', '1990-03-26', '0652000408', 0, 141, 41),
-(42, 'Tara', 'Andersson', 'Tara_Andersson8197@joiniaa.com', '$2y$10$swHjpac/12wzs0LL/BRvN.Q0Rv3ixFzI5pVDCiCHb/WsJrS4fyzSG', '1988-11-23', '0652993638', 0, 142, 42),
-(43, 'Abdul', 'Dyson', 'Abdul_Dyson469@muall.tech', '$2y$10$GLVHnfSnmJ3rkKDzp52kL.Tfq9o.O5LUwOk9Gev1QiKjPmKC5umwW', '1982-10-20', '0625050855', 0, 143, 43),
-(44, 'Gemma', 'Mcnally', 'Gemma_Mcnally1289@iatim.tech', '$2y$10$MlkWNRTbioUvlz2z75WFG.q6waRKQev7.Adg9J4IOO1hoCLacJLMq', '1987-08-04', '0675826301', 0, 144, 44),
-(45, 'Tyler', 'Whatson', 'Tyler_Whatson3521@nimogy.biz', '$2y$10$uiJoe6Pzili/QyHf08932.A7R3AM4Fwo9/KXVmaKZIfz1rzGUahKm', '1989-05-15', '0655232201', 0, 154, 45),
-(46, 'Makena', 'Rycroft', 'Makena_Rycroft8240@nimogy.biz', '$2y$10$4HYzsySG4SeYaTKwMKK8q.37/lVtYxZ6VfuZIolhlAvmc4GHisdn.', '1999-07-05', '0652866302', 0, 146, 46),
-(47, 'Michael', 'Niles', 'Michael_Niles3347@liret.org', '$2y$10$m3Z3NUO66ee9PXmRTvMS4e1wXtL37vYu/9AgMJWKda.4jNgEyjZ12', '1985-02-07', '0612324252', 0, 147, 47),
-(48, 'Bob', 'Osman', 'Bob_Osman773@zorer.org', '$2y$10$/hlkDGCNfxAtJwhlSCsXBOpU.TW/7pOHljDnjjBOw/7.skvFRm7ey', '1993-06-28', '0605062280', 0, 148, 48),
-(49, 'Matt', 'Ulyatt', 'Matt_Ulyatt3328@acrit.org', '$2y$10$lmH5bUOxfE/8Vj47/nnjEuujifB4sUOX69pOU5qp4JRwCMB/amzt.', '1995-01-24', '0612205570', 0, 149, 49),
-(50, 'Roger', 'Varley', 'Roger_Varley5438@mafthy.com', '$2y$10$7ZL4.cdiPhFu2KaXAvLG/.7cD6reN.nnHxejTo5uXR0Nl2dZEOg4G', '1994-08-21', '0612002003', 0, 150, 50);
+(1, 'Oliver', 'Ianson', 'Oliver_Ianson8973@hourpy.biz', '27090706d42a2525b9a07222f68dd3d4', '1997-01-10', '0620305040', 1, 101, 1),
+(2, 'Chad', 'Goodman', 'Chad_Goodman7035@extex.org', 'e03653dedd6f4e142f4aca131995964f', '1994-10-25', '0625426252', 1, 102, 2),
+(3, 'Tony', 'Shea', 'Tony_Shea8173@yahoo.com', 'eee7ac208064d408e84ab5e26d24b278', '1980-08-05', '0612324565', 1, 103, 3),
+(4, 'Oliver', 'Crawford', 'Oliver_Crawford433@nimogy.biz', '27090706d42a2525b9a07222f68dd3d4', '1986-07-14', '06325285645', 1, 104, 4),
+(5, 'Boris', 'Ainsworth', 'Boris_Ainsworth5928@dionrab.com', '2091c76f726f21a61b6d2f8b885cc39d', '1992-02-18', '063285964052', 1, 105, 5),
+(6, 'Jayden', 'Potts', 'Jayden_Potts356@nickia.com', '9d8c6fc9a53e9672d9c798e237f5386f', '1986-11-10', '0623820152', 0, 106, 6),
+(7, 'Sabrina', 'Stone', 'Sabrina_Stone6419@corti.com', '0243676cad978f78d4f504e8dd07192f', '1993-05-20', '062342758696', 0, 107, 7),
+(8, 'Mara', 'Harris', 'Mara_Harris2352@bungar.biz', 'ce0cd4d8c83ab6011b74c8e5563ce2a6', '1991-05-16', '063696852512', 0, 108, 8),
+(9, 'Owen', 'Welsch', 'Owen_Welsch8524@supunk.biz', 'af0bc706fca5c47970afe73c144fe6fd', '1990-08-19', '0652638519', 0, 109, 9),
+(10, 'Bob', 'Rainford', 'Bob_Rainford1433@gembat.biz', '2fc1c0beb992cd7096975cfebf9d5c3b', '1994-10-30', '0623427385', 0, 110, 10),
+(11, 'Alexander', 'Shields', 'Alexander_Shields1884@nimogy.biz', 'b7a71d8799cf6dd75b711a7f52de6675', '1977-04-11', '0672428292', 0, 111, 11),
+(12, 'Sloane', 'Greenwood', 'Sloane_Greenwood3918@qater.org', '06f3c7d4b6f668f837f0b9ef27b25358', '1980-05-10', '0652820055', 0, 112, 12),
+(13, 'Percy', 'Grady', 'Percy_Grady8797@twipet.com', '8fa32784f5c734d8c31bbbda068c349e', '1974-06-18', '0652020050', 0, 113, 13),
+(14, 'Lexi', 'Porter', 'Lexi_Porter7296@tonsy.org', '3fdae469073e50e17048175c8e63de7d', '1994-10-16', '0685964332', 0, 114, 14),
+(15, 'Rebecca', 'Rodgers', 'Rebecca_Rodgers5550@elnee.tech', '65ed72f435ddd53cb3efb0b018ce2af4', '1992-03-02', '0642528210', 0, 115, 15),
+(16, 'Henry', 'Gray', 'Henry_Gray4747@bauros.biz', '179909b745f81f03f177a3079e0ce5e3', '1991-05-01', '0642528503', 0, 116, 16),
+(17, 'Chelsea', 'Khan', 'Chelsea_Khan1875@infotech44.tech', '8056df0882080a7c1d36f190f231f919', '1998-02-12', '0632528550', 0, 117, 17),
+(18, 'Doug', 'Kennedy', 'Doug_Kennedy7802@yahoo.com', '83930fd731a92d37c5dbb39a9c5e6183', '2000-01-08', '0642528270', 0, 118, 18),
+(19, 'Tyson', 'Bailey', 'Tyson_Bailey234@ubusive.com', '51cefa59a3ed86f36af4f8c2c6e7767e', '1991-11-05', '0652639373', 0, 119, 19),
+(20, 'Marvin', 'Oswald', 'Marvin_Oswald7376@deavo.com', '7db16a4ce881aecec2bfeb3e0c741888', '1987-08-16', '0603025285', 0, 120, 20),
+(21, 'Greta', 'Pearce', 'Greta_Pearce4753@sheye.org', 'ba1ad4d61acababec37a805ad1546df6', '1978-11-07', '0652825080', 0, 121, 21),
+(22, 'Lucas', 'Jarvis', 'Lucas_Jarvis8377@famism.biz', 'c3d41bf5efb468a1bcce53bd53726c85', '1991-03-16', '0652427001', 0, 122, 22),
+(23, 'Elisabeth', 'Emmett', 'Elisabeth_Emmett1854@vetan.org', '15a76a7cee8a94c612e8f8d6425a0e44', '1980-05-06', '0652728506', 0, 123, 23),
+(24, 'Sebastian', 'Lambert', 'Sebastian_Lambert4752@zorer.org', 'b69eb4ca4b4ae19e8e4f2e3129da7fd3', '1992-01-10', '0652630809', 0, 124, 24),
+(25, 'Rosemary', 'Morley', 'Rosemary_Morley2841@bungar.biz', '4a60d61eabbcdea8a2cbea26dec047e6', '1989-11-18', '0652820708', 0, 125, 25),
+(26, 'Marilyn', 'Roberts', 'Marilyn_Roberts4039@supunk.biz', '9bb8875f9d6491cc32951e5bf355db7e', '1970-05-06', '0652823080', 0, 126, 26),
+(27, 'Penny', 'Leigh', 'Penny_Leigh6001@ubusive.com', '8907a1b7e0204929e0beea8668eac706', '1984-05-14', '0652420102', 0, 127, 27),
+(28, 'Boris', 'Dunbar', 'Boris_Dunbar1309@bauros.biz', '2091c76f726f21a61b6d2f8b885cc39d', '1992-12-01', '0652070809', 0, 128, 28),
+(29, 'Julian', 'Holt', 'Julian_Holt6862@cispeto.com', '60659cfda992013e610f285c46692d28', '1976-06-26', '0620200455', 0, 129, 29),
+(30, 'Vera', 'Kelly', 'Vera_Kelly5807@womeona.net', '74fdd90e54461399c878caeb90b3d2e2', '1988-08-08', '0652728545', 0, 130, 30),
+(31, 'Irene', 'Upsdell', 'Irene_Upsdell863@bulaffy.com', '79ae3e10d1ff66922e58d98656315b9e', '1992-08-19', '0601035234', 0, 131, 31),
+(32, 'Callie', 'Farrow', 'Callie_Farrow727@gmail.com', '8efb28f2a09fd146af662d8a49edce73', '1971-02-05', '0600527908', 0, 132, 32),
+(33, 'Britney', 'Neville', 'Britney_Neville426@nanoff.biz', '77af74f3d3e435c0ea418456f820ccfc', '1982-11-01', '06110585', 0, 133, 33),
+(34, 'Doris', 'Haines', 'Doris_Haines1566@gompie.com', '5de188c6cd8d626ad6d16d127153883e', '1995-01-30', '0678888563', 0, 134, 34),
+(35, 'Lara', 'Fox', 'Lara_Fox418@guentu.biz', 'da4fd8a50d64f47b1bac8b9a28e787cc', '1980-02-09', '0612350155', 0, 135, 35),
+(36, 'Cedrick', 'Snell', 'Cedrick_Snell8368@cispeto.com', '9b439e354b546063e82c1e763d010e5e', '1983-09-10', '0633050855', 0, 136, 36),
+(37, 'Barry', 'Page ', 'Barry_Page 34@irrepsy.com', '36661b3adc7f4c716e442fed57c12bfb', '1986-09-30', '0652724511', 0, 137, 37),
+(38, 'Logan', 'Pierce', 'Logan_Pierce1847@typill.biz', '2e1d1e3fe8265865efbc8cbb4baaf4e8', '1988-04-04', '0632550401', 0, 138, 38),
+(39, 'Nate', 'Stuart', 'Nate_Stuart5466@mafthy.com', '8878e7050143a0fe4020498043fcc0da', '1983-11-14', '0688055506', 0, 139, 39),
+(40, 'Joyce', 'Plumb', 'Joyce_Plumb8051@typill.biz', '7d54d9da656fa80e4e5a5230e0a2a549', '1973-06-15', '0612332505', 0, 140, 40),
+(41, 'Lana', 'Davies', 'Lana_Davies2607@mafthy.com', '07eadbea3700b64f60e855ef80a6605b', '1990-03-26', '0652000408', 0, 141, 41),
+(42, 'Tara', 'Andersson', 'Tara_Andersson8197@joiniaa.com', '205e8b242d2cd224d007b0052fc991bd', '1988-11-23', '0652993638', 0, 142, 42),
+(43, 'Abdul', 'Dyson', 'Abdul_Dyson469@muall.tech', 'e80a0702d314d055d05af996fe60cff9', '1982-10-20', '0625050855', 0, 143, 43),
+(44, 'Gemma', 'Mcnally', 'Gemma_Mcnally1289@iatim.tech', 'fbcb0a66cd168bc6efda74ba7c6fa704', '1987-08-04', '0675826301', 0, 144, 44),
+(45, 'Tyler', 'Whatson', 'Tyler_Whatson3521@nimogy.biz', '24dbc2b917472b089a5052b23f11f30f', '1989-05-15', '0655232201', 0, 154, 45),
+(46, 'Makena', 'Rycroft', 'Makena_Rycroft8240@nimogy.biz', '909c2605fca7a0c8d0f1d3a1e4eb37d8', '1999-07-05', '0652866302', 0, 146, 46),
+(47, 'Michael', 'Niles', 'Michael_Niles3347@liret.org', '3e06fa3927cbdf4e9d93ba4541acce86', '1985-02-07', '0612324252', 0, 147, 47),
+(48, 'Bob', 'Osman', 'Bob_Osman773@zorer.org', '2fc1c0beb992cd7096975cfebf9d5c3b', '1993-06-28', '0605062280', 0, 148, 48),
+(49, 'Matt', 'Ulyatt', 'Matt_Ulyatt3328@acrit.org', '7c1f90bd9bdc70cc059640a7a6209389', '1995-01-24', '0612205570', 0, 149, 49),
+(50, 'Roger', 'Varley', 'Roger_Varley5438@mafthy.com', 'efc5c58b9a85926a31587140cbeb0220', '1994-08-21', '0612002003', 0, 150, 50),
+(54, 'Clara', 'Vesval', 'clara.vesval@ynov.com', '0afca49306b28c1650a1d4130a6a0ce1', '2001-06-16', '0681411787', 1, 372, 2);
 
 -- --------------------------------------------------------
 
@@ -577,15 +587,14 @@ CREATE TABLE IF NOT EXISTS `biens` (
   KEY `fk_biens_adresse1_idx` (`id_adresse`),
   KEY `fk_biens_agence1_idx` (`id_agence`),
   KEY `fk_biens_membre1_idx` (`id_membre`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `biens`
 --
 
 INSERT INTO `biens` (`id_bien`, `superficie`, `prix_min`, `prix_max`, `prix_vente`, `nb_piece`, `nb_chambre`, `date_ajout`, `descriptif`, `en_ligne`, `etage`, `id_statut`, `id_type_bien`, `id_adresse`, `id_agence`, `id_membre`) VALUES
-(1, '23.00', '70000.00', '100000.00', '88000.00', 1, '0', '2020-03-28', 'Petit appartement confortable idéal pour étudiant.', 1, 1, 1, 2, 201, 1, 151),
-(2, '19.00', '80000.00', '100000.00', '90000.00', 1, '0', '2020-02-03', 'Appartement 1 pièce avec wc et salle bain séparée.', 1, 2, 1, 2, 202, 1, 152),
+(1, '25.00', '70000.00', '100000.00', '88000.00', 1, '0', '2020-03-28', 'Petit appartement confortable idéal pour étudiant.', 1, 10, 1, 2, 201, 1, 151),
 (3, '30.00', '90000.00', '120000.00', '105000.00', 1, '0', '2020-01-27', 'Appartement avec une vue superbe, avec un lit supperposé.', 1, 5, 1, 2, 203, 3, 153),
 (4, '23.00', '90000.00', '120000.00', '105000.00', 1, '0', '2020-02-17', 'Petit appartement avec chauffage électrique.', 1, 9, 1, 2, 204, 4, 154),
 (5, '36.00', '95000.00', '120000.00', '108000.00', 1, '0', '2020-02-19', '1 pièce de 36m2 idéal pour un couple.', 1, 6, 1, 2, 205, 5, 155),
@@ -699,7 +708,7 @@ CREATE TABLE IF NOT EXISTS `dependance` (
   `id_bien` int(11) NOT NULL,
   PRIMARY KEY (`id_dependance`),
   KEY `fk_dependance_biens1_idx` (`id_bien`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `dependance`
@@ -760,7 +769,9 @@ INSERT INTO `dependance` (`id_dependance`, `nom_dependance`, `superficie`, `id_b
 (52, 'Verenda', '22.00', 84),
 (53, 'Verenda', '24.00', 85),
 (54, 'Verenda', '28.00', 86),
-(55, 'Verenda', '15.00', 87);
+(55, 'Verenda', '15.00', 87),
+(60, 'Garage', '12.00', 1),
+(61, 'Garage', '12.00', 1);
 
 -- --------------------------------------------------------
 
@@ -797,7 +808,7 @@ CREATE TABLE IF NOT EXISTS `favoris` (
   PRIMARY KEY (`id_favoris`),
   KEY `fk_membre_has_biens_biens1_idx` (`id_bien`),
   KEY `fk_membre_has_biens_membre1_idx` (`id_membre`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `favoris`
@@ -819,7 +830,7 @@ CREATE TABLE IF NOT EXISTS `image` (
   `id_bien` int(11) NOT NULL,
   PRIMARY KEY (`id_image`),
   KEY `fk_image_biens_idx` (`id_bien`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `image`
@@ -928,8 +939,6 @@ INSERT INTO `image` (`id_image`, `lien_image`, `id_bien`) VALUES
 (100, 'img/biens/maison50-2.png', 100),
 (101, 'img/biens/appart1-1.jpg', 1),
 (102, 'img/biens/appart1-2.jpg', 1),
-(103, 'img/biens/appart2-1.jpg', 2),
-(104, 'img/biens/appart2-2.jpg', 2),
 (105, 'img/biens/appart3-1.jpg', 3),
 (106, 'img/biens/appart3-2.jpg', 3),
 (107, 'img/biens/appart4-1.jpg', 4),
@@ -1052,7 +1061,7 @@ CREATE TABLE IF NOT EXISTS `membre` (
   KEY `fk_membre_type_membre1_idx` (`id_type_membre`),
   KEY `fk_membre_agent_immobilier1_idx` (`id_agent`),
   KEY `fk_membre_agence1_idx` (`id_agence`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `membre`
@@ -1241,7 +1250,7 @@ CREATE TABLE IF NOT EXISTS `statut` (
   `id_statut` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(16) NOT NULL,
   PRIMARY KEY (`id_statut`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `statut`
@@ -1262,7 +1271,7 @@ CREATE TABLE IF NOT EXISTS `type_bien` (
   `id_type_bien` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(16) NOT NULL,
   PRIMARY KEY (`id_type_bien`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `type_bien`
@@ -1283,7 +1292,7 @@ CREATE TABLE IF NOT EXISTS `type_document` (
   `id_type_document` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(32) NOT NULL,
   PRIMARY KEY (`id_type_document`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `type_document`
@@ -1305,7 +1314,7 @@ CREATE TABLE IF NOT EXISTS `type_membre` (
   `id_type_membre` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(16) NOT NULL,
   PRIMARY KEY (`id_type_membre`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `type_membre`
