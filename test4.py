@@ -1,14 +1,11 @@
-class A(object):
-    parameter = 1
-    def calculer(self,value):
-        return value**2
- 
-class B(object):
-    def __init__(self):
-        self._A = A()
-    def utiliser(sel,value):
-        return self._A.calculer(value)
-    def montrer(self):
-        print (self._A.parameter)
-        print (A.parameter)
-        print("con")
+from tkinter import * #Importe Tkinter pour l'interface graphique
+def fetch():
+    print list.get(ACTIVE)
+root = Tk()
+list = Listbox(root)
+list.pack(side=TOP)
+Button(root, text='fetch', command=fetch).pack()
+for index in range(10):
+    list.insert(index, 'ligne-' + str(index))
+
+root.mainloop()

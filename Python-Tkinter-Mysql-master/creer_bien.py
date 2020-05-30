@@ -163,7 +163,7 @@ class CreerBien:
         self.listeAgence.current(agenceActuelle)
         self.listeAgence.place(x=120, y = 340)
         self.attention = Label(self.frame, text="Attention pour modifer l'agence il faut la modifer dans votre espace")
-
+        self.attention.place(x=230, y=340)
 
 
         #Autres informations
@@ -281,22 +281,22 @@ class CreerBien:
         else :
             try:
                 testEtage = int(self.etage.get()) #On vérifie que c'est un nombre
-                testPiece = int(self.etage.get())
-                testChambre = int(self.etage.get())
-                testSuperficie = int(self.etage.get())
-                testSuperficieDep = int(self.etage.get())
-                testVendeur = int(self.etage.get())
-                testPrixMin = int(self.etage.get())
-                testPrixMax = int(self.etage.get())
-                testPrixVente = int(self.etage.get())
+                testPiece = int(self.nbPiece.get())
+                testChambre = int(self.nbChambre.get())
+                testSuperficie = int(self.superficie.get())
+                testSuperficieDep = int(self.superficieDep.get())
+                testVendeur = int(self.vendeur.get())
+                testPrixMin = int(self.prixMin.get())
+                testPrixMax = int(self.prixMax.get())
+                testPrixVente = int(self.prixVente.get())
                 
 
 
             except:
                 messagebox.showinfo("Message","Il y a des erreurs de saisies.")
-                erreur=1
+        
                 
-            if erreur>1 :
+            if testVendeur>251 or testVendeur<100 :
                 messagebox.showinfo("Message","Veuillez rentrer des données correctes.")
             else :  
             

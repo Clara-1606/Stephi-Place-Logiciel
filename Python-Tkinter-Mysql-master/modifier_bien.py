@@ -11,7 +11,6 @@ import creer_bien #Importe le fichier creer_bien.py
 class ModifierBien: 
     
     def __init__(self):
-        print(annonce.Annonce.staticBien)
         self.fenetre = Tk()
         #Reinilisaliser la fenetre et le fond d'ecran
         self.canvas = Canvas(self.fenetre, width=850, height=800, bg='white')
@@ -21,7 +20,7 @@ class ModifierBien:
         self.fenetre.resizable(width=False, height=False)
 
         ##changer le titre de la fenetre
-        self.fenetre.title("CREER UN BIEN | STEPHI PLACE")
+        self.fenetre.title("MODIFIER UN BIEN | STEPHI PLACE")
 
 
         #Connexion à la base de données
@@ -60,6 +59,12 @@ class ModifierBien:
         global agenceActuelle
         agenceActuelle=idAgence - 1
 
+
+        sql="SELECT id_type_bien, etage, nb_piece, nb_chambre, biens.superficie, id_membre, adresse, complement_adresse,ville, code_postal, nom_dependance, dependance.superficie,descriptif,prix_min,prix_max,prix_vente, biens.id_adresse, id_dependance,id_statut FROM biens Inner JOIN adresse ON biens.id_adresse=adresse.id_adresse LEFT JOIN dependance ON biens.id_bien=dependance.id_bien WHERE biens.id_bien=%s"
+        idBien=(annonce.Annonce.staticBien,)
+        curseur.execute(sql,idBien)
+        global info
+        info=curseur.fetchall()
         
         #Début du formulaire
 
@@ -83,6 +88,7 @@ class ModifierBien:
  
         self.appart = Radiobutton(self.frame, text="Appartement", variable=var, value=2)
         self.appart.place( x=280, y = 60 )
+        var.set(info[0][0])	
 
         
         self.labEtage = Label(self.frame, text="Etage :")
@@ -91,6 +97,7 @@ class ModifierBien:
         
         self.etage = Entry(self.frame, font='helvetica 12', width=2)
         self.etage.place(x=570, y= 60)
+        self.etage.insert(END, info[0][1])
         
         self.labNbPiece = Label(self.frame, text="Nombre de pièces :")
         self.labNbPiece.config(font=("helvetica", 12, 'bold'))
@@ -98,6 +105,7 @@ class ModifierBien:
         
         self.nbPiece =Entry(self.frame, font='helvetica 12', width=2)
         self.nbPiece.place(x=200, y= 100)
+        self.nbPiece.insert(END, info[0][2])
         
         self.labNbChambre = Label(self.frame, text="Nombre de chambres :")
         self.labNbChambre.config(font=("helvetica", 12, 'bold'))
@@ -105,13 +113,15 @@ class ModifierBien:
         
         self.nbChambre =Entry(self.frame, font='helvetica 12', width=2)
         self.nbChambre.place(x=700, y= 100)
+        self.nbChambre.insert(END, info[0][3])
         
         self.labSuperficie= Label(self.frame, text="Superficie :")
         self.labSuperficie.config(font=("helvetica", 12, 'bold'))
         self.labSuperficie.place(x=20, y = 140)
         
-        self.superficie=Entry(self.frame, font='helvetica 12', width=4)
+        self.superficie=Entry(self.frame, font='helvetica 12', width=5)
         self.superficie.place(x=140, y=  140)
+        self.superficie.insert(END, info[0][4])
 
         self.labVendeur= Label(self.frame, text="Id Vendeur :")
         self.labVendeur.config(font=("helvetica", 12, 'bold'))
@@ -119,6 +129,7 @@ class ModifierBien:
 
         self.vendeur=Entry(self.frame, font='helvetica 12', width=4)
         self.vendeur.place(x=610, y=  140)
+        self.vendeur.insert(END, info[0][5])
         
 
         #Adresses
@@ -132,6 +143,7 @@ class ModifierBien:
         
         self.adresse=Entry(self.frame, font='helvetica 12')
         self.adresse.place(x=130, y=  260)
+        self.adresse.insert(END, info[0][6])
 
         self.labVille =Label(self.frame, text="Ville :")
         self.labVille.config(font=("helvetica", 12, 'bold'))
@@ -139,13 +151,16 @@ class ModifierBien:
         
         self.ville =Entry(self.frame, font='helvetica 12')
         self.ville.place(x=570, y=  260)
+        self.ville.insert(END, info[0][8])
         
         self.labComplementAdresse=Label(self.frame, text="Complément d'adresse :")
         self.labComplementAdresse.config(font=("helvetica", 12, 'bold'))
         self.labComplementAdresse.place(x=20, y = 300)
-        
+
         self.complementAdresse=Entry(self.frame, font='helvetica 12')
         self.complementAdresse.place(x=230, y= 300)
+        if info[0][7]!=None:
+            self.complementAdresse.insert(END, info[0][7])
         
         self.labCodePostal =Label(self.frame, text="Code Postal :")
         self.labCodePostal.config(font=("helvetica", 12, 'bold'))
@@ -153,6 +168,7 @@ class ModifierBien:
         
         self.codePostal =Entry(self.frame, font='helvetica 12', width = 5)
         self.codePostal.place(x=630, y= 300)
+        self.codePostal.insert(END, info[0][9])
         
         self.labAgence =Label(self.frame, text="Agence :")
         self.labAgence.config(font=("helvetica", 12, 'bold'))
@@ -163,7 +179,7 @@ class ModifierBien:
         self.listeAgence.current(agenceActuelle)
         self.listeAgence.place(x=120, y = 340)
         self.attention = Label(self.frame, text="Attention pour modifer l'agence il faut la modifer dans votre espace")
-
+        self.attention.place(x=230, y=340)
 
 
         #Autres informations
@@ -183,8 +199,11 @@ class ModifierBien:
         self.labSuperficieDep.config(font=("helvetica", 12, 'bold'))
         self.labSuperficieDep.place(x=500, y = 460)
         
-        self.superficieDep =Entry(self.frame, font='helvetica 12', width=4)
+        self.superficieDep =Entry(self.frame, font='helvetica 12', width=5)
         self.superficieDep.place(x=620, y=460)
+
+        if info[0][11]!=None:
+            self.superficieDep.insert(END, info[0][11])
         
         self.labDescription =Label(self.frame, text="Description :")
         self.labDescription.config(font=("helvetica", 12, 'bold'))
@@ -192,6 +211,7 @@ class ModifierBien:
 
         self.description =Entry(self.frame, font='helvetica 12')
         self.description.place(x=150, y= 500)
+        self.description.insert(END, info[0][12])
 
         self.labPhoto =Label(self.frame, text="Photo :")
         self.labPhoto.config(font=("helvetica", 12, 'bold'))
@@ -212,6 +232,7 @@ class ModifierBien:
         
         self.prixMin =Entry(self.frame, font='helvetica 12')
         self.prixMin.place(x=120, y=  610)
+        self.prixMin.insert(END, info[0][13])
         
         self.labPrixMax =Label(self.frame, text="Prix Max :")
         self.labPrixMax.config(font=("helvetica", 12, 'bold'))
@@ -219,6 +240,7 @@ class ModifierBien:
         
         self.prixMax =Entry(self.frame, font='helvetica 12')
         self.prixMax.place(x=600, y=  610)
+        self.prixMax.insert(END, info[0][14])
         
         self.labPrixVente =Label(self.frame, text="Prix de Vente :")
         self.labPrixVente.config(font=("helvetica", 12, 'bold'))
@@ -226,6 +248,22 @@ class ModifierBien:
         
         self.prixVente =Entry(self.frame, font='helvetica 12')
         self.prixVente.place(x=160, y= 650)
+        self.prixVente.insert(END, info[0][15])
+
+        self.labStatut =Label(self.frame, text="Statut :")
+        self.labStatut.config(font=("helvetica", 12, 'bold'))
+        self.labStatut.place(x=500, y = 650)
+
+        global vari
+        vari = IntVar()
+        
+        self.aVendre = Radiobutton(self.frame, text="A vendre", variable=vari, value=1)
+        self.aVendre.place(x=560, y = 650 )
+ 
+        self.vendu = Radiobutton(self.frame, text="Vendu", variable=vari, value=2)
+        self.vendu.place(x=660, y = 650 )
+        vari.set(info[0][18])
+
 
         
         #Boutons valider et retour
@@ -261,88 +299,68 @@ class ModifierBien:
 
         curseur = connexionBdd.cursor()
 
-        #Avoir la date du jour
-        self.date = datetime.datetime.today().strftime('%Y-%m-%d')
-
-        #Id status
-        self.status=1
-
         #Mettre les donnees dans un tuple (données)
 
         donneeAdresse =(
             self.adresse.get(),
             self.complementAdresse.get(),
             self.ville.get(),
-            self.codePostal.get()
+            self.codePostal.get(),
+            info[0][16]
         )
 
-        if var.get()==0 or self.nbPiece.get()=="" or self.nbChambre.get()=="" or self.superficie.get()=="" or self.adresse.get()=="" or self.ville.get()=="" or self.codePostal.get()=="" or self.superficieDep.get()=="" or self.description.get()=="" or self.prixMin.get()=="" or self.prixMax.get()=="" or self.prixVente.get()=="" :
+        if var.get()==0 or vari.get()==0 or self.nbPiece.get()=="" or self.nbChambre.get()=="" or self.superficie.get()=="" or self.adresse.get()=="" or self.ville.get()=="" or self.codePostal.get()=="" or self.superficieDep.get()=="" or self.description.get()=="" or self.prixMin.get()=="" or self.prixMax.get()=="" or self.prixVente.get()=="" :
              messagebox.showinfo("Attention!","Veuillez renseigner tous les champs.")
         else :
             try:
                 testEtage = int(self.etage.get()) #On vérifie que c'est un nombre
-                testPiece = int(self.etage.get())
-                testChambre = int(self.etage.get())
-                testSuperficie = int(self.etage.get())
-                testSuperficieDep = int(self.etage.get())
-                testVendeur = int(self.etage.get())
-                testPrixMin = int(self.etage.get())
-                testPrixMax = int(self.etage.get())
-                testPrixVente = int(self.etage.get())
-                
+                testPiece = int(self.nbPiece.get())
+                testChambre = int(self.nbChambre.get())
+                testSuperficie = float(self.superficie.get())
+                testSuperficieDep = float(self.superficieDep.get())
+                testVendeur = int(self.vendeur.get())
+                testPrixMin = float(self.prixMin.get())
+                testPrixMax = float(self.prixMax.get())
+                testPrixVente = float(self.prixVente.get())
+
             except:
                 messagebox.showinfo("Message","Il y a des erreurs de saisies.")
-                erreur=1
-                
-            if erreur>1 :
-                messagebox.showinfo("Message","Veuillez rentrer des données correctes.")
-            else :  
-            
-                sql="INSERT INTO adresse (adresse, complement_adresse,code_postal,ville) VALUE (%s,%s,%s,%s)"
+            if testVendeur>251 or testVendeur<100 :
+                messagebox.showinfo("Message","L'id Vendeur doit être entre 100 et 250.")
+            else :   
+                sql="UPDATE adresse SET adresse=%s, complement_adresse=%s, ville=%s, code_postal=%s WHERE id_adresse=%s "
                 curseur.execute(sql,donneeAdresse)
                 connexionBdd.commit()
 
-                curseur.execute("SELECT id_adresse FROM adresse ORDER BY id_adresse DESC")
-                idAdresse=curseur.fetchall()
-                idAdresse=idAdresse[0][0]
-
-                self.enLigne=1
-                
                 donneeBien = (
                 var.get(),
                 self.etage.get(),
                 self.nbPiece.get(),
                 self.nbChambre.get(),
                 self.superficie.get(),
-                idAgence,
                 self.description.get(),
                 self.prixMin.get(),
                 self.prixMax.get(),
                 self.prixVente.get(),
-                self.date,
-                self.status,
-                idAdresse,
-                self.enLigne,
-                self.vendeur.get()
+                self.vendeur.get(),
+                vari.get(),
+                info[0][16]
                 )
+                    
                 curseur= connexionBdd.cursor(buffered=True)
-                sql="INSERT INTO biens (id_type_bien, etage,nb_piece, nb_chambre,superficie,id_agence, descriptif, prix_min, prix_max, prix_vente, date_ajout, id_statut, id_adresse,en_ligne, id_membre) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                sql="UPDATE biens SET id_type_bien=%s, etage=%s,nb_piece=%s, nb_chambre=%s,superficie=%s, descriptif=%s, prix_min=%s, prix_max=%s, prix_vente=%s, id_membre=%s, id_statut=%s WHERE id_adresse=%s"
                 curseur.execute(sql,donneeBien)
                 connexionBdd.commit()
 
 
-                curseur.execute("SELECT id_bien FROM biens ORDER BY id_bien DESC")
-                idBien=curseur.fetchall()
-                idBien=idBien[0][0]
-
                 donneeDep= (
                 self.listeDep.get(),
                 self.superficieDep.get(),
-                idBien
+                info[0][17]
                 )
 
 
-                sql="INSERT INTO dependance(nom_dependance,superficie,id_bien) VALUE (%s,%s,%s)"       
+                sql="UPDATE dependance SET nom_dependance=%s,superficie=%s WHERE id_bien=%s"       
                 curseur.execute(sql,donneeDep)
                 connexionBdd.commit()
 

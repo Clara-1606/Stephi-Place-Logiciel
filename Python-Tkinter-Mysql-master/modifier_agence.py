@@ -12,7 +12,7 @@ class ModifierAgence:
     def __init__(self):
         self.fenetre = Tk()
         #Reinilisaliser la fenetre et le fond d'ecran
-        self.canvas = Canvas(self.fenetre, width=600, height=400, bg='white')
+        self.canvas = Canvas(self.fenetre, width=550, height=400, bg='white')
         self.canvas.pack(expand=YES, fill=BOTH)
 
         #Désactiver le changement de taille de la fenetre
@@ -21,7 +21,7 @@ class ModifierAgence:
         #Changer le titre de la fenetre
         self.fenetre.title("CREER UN AGENT IMMOBILIER | STEPHI PLACE")
 
-        self.frame = Frame(self.fenetre, height=360, width=560)
+        self.frame = Frame(self.fenetre, height=360, width=510)
         self.frame.place(x=20, y=20)
 
         #Connexion à la base de données
@@ -63,24 +63,24 @@ class ModifierAgence:
 
 
         self.labTitre = Label(self.frame, text="Modifier les frais d'agence :",font=('helvetica', 20, 'underline bold'), fg="#CA1809")
-        self.labTitre.place(x=100, y = 20)
+        self.labTitre.place(x=80, y = 20)
 
 
         self.labAgence =Label(self.frame, text="Agence :")
         self.labAgence.config(font=("helvetica", 12, 'bold'))
-        self.labAgence.place(x=20, y = 130)
+        self.labAgence.place(x=150, y = 100)
 
 
         self.listeAgence = ttk.Combobox(self.frame, values=agences, width=35, state="disabled")
         self.listeAgence.current(agenceActuelle)
-        self.listeAgence.place(x=20, y = 160)
+        self.listeAgence.place(x=150, y = 130)
 
         self.labFrais = Label(self.frame, text="Frais d'agence : ")
         self.labFrais.config(font=("helvetica", 12, 'bold'))
-        self.labFrais.place(x=300, y = 130)
+        self.labFrais.place(x=150, y = 180)
 
         self.frais =Entry(self.frame, font='helvetica 12', width=25)
-        self.frais.place(x=300, y=  160)
+        self.frais.place(x=150, y=  210)
         self.frais.insert(END, info[0][0])
 
         
@@ -88,11 +88,11 @@ class ModifierAgence:
 
          #Boutons valider et retour
         self.bouttonValider = Button(self.frame, text="Modifier", font='helvetica 15 bold',bg="#CA1809",fg="white", command=self.modifier)
-        self.bouttonValider.place(x=240, y=300, width=110, height=25)
+        self.bouttonValider.place(x=200, y=300, width=100, height=25)
 
         self.boutonRetour=Button(self.frame, text="Retour", font=('helvetica',15,'bold')
                              , bg='#CA1809', fg='white', command=self.retour)
-        self.boutonRetour.place(x=20, y=300, width=110, height=25)
+        self.boutonRetour.place(x=20, y=300, width=100, height=25)
 
         
 

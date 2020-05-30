@@ -132,6 +132,8 @@ class Espace:
         
         self.complementAdresse=Entry(self.frame, font='helvetica 12', width=25)
         self.complementAdresse.place(x=360, y= 360)
+        if info[0][6]!=None:
+            self.complementAdresse.insert(END, info[0][7])
 
         self.labVille =Label(self.frame, text="Ville :")
         self.labVille.config(font=("helvetica", 12, 'bold'))

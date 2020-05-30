@@ -234,7 +234,6 @@ class CreerAgent:
                 idAdresse,
                 var.get()
                 )
-            print(infoPerso)
 
             sql="INSERT INTO agent_immobilier (prenom, nom, date_naissance, numero_telephone, mail, mot_de_passe, id_agence, id_adresse, est_admin) VALUES ( %s,%s,%s,%s,%s,%s,%s,%s,%s)"
             curseur.execute(sql,infoPerso)
